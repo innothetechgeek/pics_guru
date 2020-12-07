@@ -99,7 +99,8 @@ input {
 }
 
 .member-btn{
-max-width: 100%;
+  max-width: 100%;
+  border:none;
 }
 
 
@@ -118,6 +119,7 @@ max-width: 100%;
                 <div class="field-container">
                     <label for="name">Name</label>
                     <input id="name" maxlength="20" type="text" value = "<?php echo $user->username ?>">
+                    <input  id = "email" type = "hidden" name = "email" value = "<?php echo $user->email ?>" >
                 </div>
                 
                 <div class="field-container">
@@ -142,16 +144,16 @@ max-width: 100%;
   function createPaymentMethod(){
     let priceId =  'prod_IVfgMwd1F4unb8';
      let billing_name = document.getElementById("name").value;
-    let result = stripe.createPaymentMethod({
+    let payment_method = stripe.createPaymentMethod({
       type: 'card',
       card: card,
       billing_details: {
         name: billing_name,
       },
     });
-     
-     if (result.error) {
-        alert('results has error');
+    
+    payment_method.then(function(result){
+      if (result.error) {
         displayError(result);
       } else {
         alert(result.paymentMethod.id);
@@ -160,6 +162,9 @@ max-width: 100%;
           priceId: priceId,
         });
       }
+      
+    });
+    
     }
     
     var style = {'background-color':'red'};
@@ -188,8 +193,8 @@ max-width: 100%;
 
     
     function createSubscription($payment_method) {
-
-      alert('about to create subscription');
+     let customer_name  = document.getElementById("name").value;
+     let customer_email  = document.getElementById("email").value;
     //  document.getElementById("myText").value;
            let baseUrl = "<?php echo base_url(); ?>";
             let priceId =  'prod_IVfgMwd1F4unb8';
@@ -201,6 +206,8 @@ max-width: 100%;
                 },
                 body: JSON.stringify({
                   priceId: priceId,
+                  customer: {'name':customer_name,'email':customer_email},
+                  paymentMethodId : $payment_method,
                 }),
               })
                 .then((response) => {
@@ -229,7 +236,11 @@ max-width: 100%;
                   // We utilize the HTML element we created.
                   showCardError(error);
                 })
+
+                
             );
+
+            window.location.href="<?php echo site_url('web/success'); ?>";
       }
 </script>
 </body>
