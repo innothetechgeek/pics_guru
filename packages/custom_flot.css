@@ -1,0 +1,126 @@
+
+.media:first-child {
+    margin-top: 0;
+}
+.pad-all {
+    padding: 15px;
+}
+
+.panel {
+    background-color: #fff;
+}
+.media, .media-body {
+    zoom: 1;
+    overflow: hidden;
+}
+.media {
+    margin-top: 15px;
+}
+
+.panel .panel-heading, .panel>:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.media-left, .media > .pull-left {
+    padding-right: 15px;
+}
+.media-body, .media-left, .media-right {
+    display: table-cell;
+    vertical-align: top;
+}
+.media-left, .media>.pull-left {
+    padding-right: 10px;
+}
+
+
+.icon-wrap-sm {
+    padding: 15px;
+}
+.icon-wrap {
+    display: inline-block;
+    padding: 17px;
+    border-radius: 2px;
+}
+.icon-circle {
+    border-radius: 50%;
+}
+.bg-info {
+    color: #fff;
+    background-color: #5bc0de;
+}
+.fa-2x {
+    font-size: 2em;
+}
+.fa-3x {
+    font-size: 3em;
+}
+.fa {
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.fa, .fa-stack, .fileinput, .fileinput .thumbnail {
+    display: inline-block;
+}
+
+.media-body, .media-left, .media-right {
+    display: table-cell;
+    vertical-align: top;
+}
+.media-body {
+    width: 10000px;
+}
+.media, .media-body {
+    zoom: 1;
+    overflow: hidden;
+}
+.media-heading {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.fa {
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa, .fa-stack, .fileinput, .fileinput .thumbnail {
+    display: inline-block;
+}
+.fa-bell:before {
+    content: "\f0f3";
+}
+
+.box.box-primary {
+     border-top-color: #3c8dbc; 
+}
+.box {
+    position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.box-header.with-border {
+    border-bottom: 1px solid #f4f4f4;
+}
+.box-header {
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+}
+.box-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 10px;
+}
