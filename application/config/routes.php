@@ -67,6 +67,7 @@ $route['admin'] = 'admin/index';
 $route['client'] = 'client/index';
 $route['web'] = 'web';
 $route['process-stripe-payment'] = 'Stripe/processPayment';
+$route['stripe-payment-successful'] = 'Stripe/successPage';
 
 
 

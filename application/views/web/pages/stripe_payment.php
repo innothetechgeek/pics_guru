@@ -120,14 +120,14 @@ input {
                     <label for="name">Name</label>
                     <input id="name" maxlength="20" type="text" value = "<?php echo $user->username ?>">
                     <input  id = "email" type = "hidden" name = "email" value = "<?php echo $user->email ?>" >
+                    <input  id = "stripe_price_id" type = "hidden" name = "stripe_price_id" value = "<?php echo$membership->stripe_price_id ?>" >
+                  
                 </div>
-                
                 <div class="field-container">
                     <label for="cardnumber">Card Number</label>
                     <div id="card-element"> 
                         <input id="cardnumber" type="text" pattern="[0-9]*" inputmode="numeric">
                     </div>
-                   
                 </div>
               <div class="field-container">
                 <button class ="member-btn subscribe-btn" onClick = "createPaymentMethod()" style = "padding: 2% !important" type="submit">Subscribe</button>
@@ -142,28 +142,42 @@ input {
 
 <script>
   function createPaymentMethod(){
-    let priceId =  'prod_IVfgMwd1F4unb8';
-     let billing_name = document.getElementById("name").value;
-    let payment_method = stripe.createPaymentMethod({
-      type: 'card',
-      card: card,
-      billing_details: {
-        name: billing_name,
-      },
-    });
-    
-    payment_method.then(function(result){
-      if (result.error) {
-        displayError(result);
-      } else {
-        alert(result.paymentMethod.id);
-        createSubscription({
-          paymentMethodId: result.paymentMethod.id,
-          priceId: priceId,
-        });
-      }
+
+      let priceId =  document.getElementById("stripe_price_id").value;;
+      let billing_name = document.getElementById("name").value;
+
+      //creates payment method - payment method is always 'card' in our use case
+      let payment_method = stripe.createPaymentMethod({
+        type: 'card',
+        card: card,
+        billing_details: {
+          name: billing_name,
+        },
+      });
       
-    });
+      //then create subscription 
+      payment_method.then(function(result){
+
+          if (result.error) {
+
+            displayError(result);
+
+          } else {
+          
+            createSubscription({
+              paymentMethodId: result.paymentMethod.id,
+              priceId: priceId,
+            });
+
+            alert('You have successfully subscribed  Please continue to the login screen.');
+            document.getElementById("name").value = "";
+            card.clear();
+
+          }
+        
+        });
+
+       
     
     }
     
@@ -193,11 +207,12 @@ input {
 
     
     function createSubscription($payment_method) {
+
      let customer_name  = document.getElementById("name").value;
      let customer_email  = document.getElementById("email").value;
-    //  document.getElementById("myText").value;
            let baseUrl = "<?php echo base_url(); ?>";
             let priceId =  'prod_IVfgMwd1F4unb8';
+
             return (
               fetch(baseUrl+'/process-stripe-payment', {
                 method: 'post',
@@ -240,8 +255,7 @@ input {
                 
             );
 
-            window.location.href="<?php echo site_url('web/success'); ?>";
-      }
+  }
 </script>
 </body>
 </html>

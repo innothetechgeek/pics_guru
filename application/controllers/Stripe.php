@@ -47,7 +47,13 @@ class Stripe extends CI_Controller {
             'expand' => ['latest_invoice.payment_intent'],
         ]);
 
-        redirect('web/success');
+        //$this->load->view('web/pages/success');
+       // redirect('web/success');
+    }
+     
+
+    public function successPage(){
+        $this->load->view('web/pages/success');
     }
 
     
