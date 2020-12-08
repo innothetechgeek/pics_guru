@@ -181,8 +181,7 @@ input {
     
     }
     
-    var style = {'background-color':'red'};
-    let card = elements.create('card',{'style': style }); //can passing card css tyle as a second param, will do that later...
+    let card = elements.create('card'); //can pass card css tyle as a second param, will do that later...
     card.mount('#card-element');
 
     // validates card numbers
