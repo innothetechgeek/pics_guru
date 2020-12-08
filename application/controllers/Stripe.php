@@ -14,8 +14,8 @@ class Stripe extends CI_Controller {
 
 
         $requestBody = json_decode(file_get_contents('php://input'));
-       // retu
-        //Set the default payment method on the customer
+    
+        //creates customer
        $customer = \Stripe\Customer::create([
            
             'name' =>$requestBody->customer->name,

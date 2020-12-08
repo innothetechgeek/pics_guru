@@ -208,52 +208,50 @@ input {
     
     function createSubscription($payment_method) {
 
-     let customer_name  = document.getElementById("name").value;
-     let customer_email  = document.getElementById("email").value;
-           let baseUrl = "<?php echo base_url(); ?>";
-            let priceId =  'prod_IVfgMwd1F4unb8';
+        let customer_name  = document.getElementById("name").value;
+        let customer_email  = document.getElementById("email").value;
+        let baseUrl = "<?php echo base_url(); ?>";
+        let priceId =  document.getElementById("stripe_price_id").value;
 
-            return (
-              fetch(baseUrl+'/process-stripe-payment', {
-                method: 'post',
-                headers: {
-                  'Content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                  priceId: priceId,
-                  customer: {'name':customer_name,'email':customer_email},
-                  paymentMethodId : $payment_method,
-                }),
+        return (
+            fetch(baseUrl+'/process-stripe-payment', {
+              method: 'post',
+              headers: {
+                'Content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                priceId: priceId,
+                customer: {'name':customer_name,'email':customer_email},
+                paymentMethodId : $payment_method,
+              }),
+            })
+              .then((response) => {
+                return response.json();
               })
-                .then((response) => {
-                  return response.json();
-                })
-                // If the card is declined, display an error to the user.
-                .then((result) => {
-                  if (result.error) {
-                    // The card had an error when trying to attach it to a customer.
-                    throw result;
-                  }
-                  return result;
-                })
-                // Normalize the result to contain the object returned by Stripe.
-                // Add the additional details we need.
-                .then((result) => {
-                  return {
-                    priceId: priceId,
-                    subscription: result,
-                  };
-                })
-                // No more actions required. Provision your service for the user.
-              //  .then(onSubscriptionComplete)
-                .catch((error) => {
-                  // An error has happened. Display the failure to the user here.
-                  // We utilize the HTML element we created.
-                  showCardError(error);
-                })
-
-                
-            );
+              // If the card is declined, display an error to the user.
+              .then((result) => {
+                if (result.error) {
+                  // The card had an error when trying to attach it to a customer.
+                  throw result;
+                }
+                return result;
+              })
+              // Normalize the result to contain the object returned by Stripe.
+              // Add the additional details we need.
+              .then((result) => {
+                return {
+                  priceId: priceId,
+                  subscription: result,
+                };
+              })
+              // No more actions required. Provision your service for the user.
+            //  .then(onSubscriptionComplete)
+              .catch((error) => {
+                // An error has happened. Display the failure to the user here.
+                // We utilize the HTML element we created.
+                showCardError(error);
+              })
+         );
 
   }
 </script>
