@@ -24,17 +24,17 @@ class Stripe extends CI_Controller {
        ]);
 
         $payment_method = \Stripe\PaymentMethod::retrieve($requestBody->paymentMethodId->paymentMethodId);
-          
-          $payment_method->attach([
+        //attach payment method to customer  
+        $payment_method->attach([
             'customer' => $customer->id,
-          ]);
+        ]);
 
-          // Set the default payment method on the customer
-          \Stripe\Customer::update($customer->id, [
-                'invoice_settings' => [
-                'default_payment_method' => $requestBody->paymentMethodId->paymentMethodId
-                ]
-            ]);
+        // Set the default payment method on the customer
+        \Stripe\Customer::update($customer->id, [
+            'invoice_settings' => [
+            'default_payment_method' => $requestBody->paymentMethodId->paymentMethodId
+            ]
+        ]);
 
          // Create the subscription
         $subscription = \Stripe\Subscription::create([
@@ -46,9 +46,9 @@ class Stripe extends CI_Controller {
             ],
             'expand' => ['latest_invoice.payment_intent'],
         ]);
-
-        //$this->load->view('web/pages/success');
-       // redirect('web/success');
+    
+        //deletes temp user
+       $this->db->delete('temp_user', array('email' =>$requestBody->customer->email));
     }
      
 

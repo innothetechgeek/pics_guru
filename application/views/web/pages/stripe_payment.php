@@ -1,11 +1,4 @@
 <script src="https://js.stripe.com/v3/"></script>
-<script>
-  // Set your publishable key: remember to change this to your live publishable key in production
-  // See your keys here: https://dashboard.stripe.com/account/apikeys
-  let stripe = Stripe('pk_test_51HueDxAsgKxZZ0EMdkk2HEIhh8PVAnc33a9nTVsklMufJyWPU6yLagUAmC64MScL5Ea50gXNnr9xKdtPswUJ9Ieg005AB5xlY7');
-  let elements = stripe.elements();
-</script>
-
 <style>
 .payment-info-container {
     margin: 0;
@@ -128,6 +121,8 @@ input {
                     <div id="card-element"> 
                         <input id="cardnumber" type="text" pattern="[0-9]*" inputmode="numeric">
                     </div>
+                    <p id = "card-element-errors"></p>
+                  
                 </div>
               <div class="field-container">
                 <button class ="member-btn subscribe-btn" onClick = "createPaymentMethod()" style = "padding: 2% !important" type="submit">Subscribe</button>
@@ -141,6 +136,7 @@ input {
 </div>
 
 <script>
+console.log('hello');
   function createPaymentMethod(){
 
       let priceId =  document.getElementById("stripe_price_id").value;;
@@ -164,23 +160,28 @@ input {
 
           } else {
           
-            createSubscription({
+            var subscription = createSubscription({
               paymentMethodId: result.paymentMethod.id,
               priceId: priceId,
+
             });
 
             alert('You have successfully subscribed  Please continue to the login screen.');
+            create_user();
             document.getElementById("name").value = "";
             card.clear();
-
-          }
+           
+        }
         
         });
 
        
     
-    }
-    
+  }
+    // Set your publishable key: remember to change this to your live publishable key in production
+    let stripe = Stripe('pk_test_51HueDxAsgKxZZ0EMdkk2HEIhh8PVAnc33a9nTVsklMufJyWPU6yLagUAmC64MScL5Ea50gXNnr9xKdtPswUJ9Ieg005AB5xlY7');
+    let elements = stripe.elements();
+
     let card = elements.create('card'); //can pass card css tyle as a second param, will do that later...
     card.mount('#card-element');
 
@@ -188,15 +189,16 @@ input {
     card.on('change', function (event) {
         displayError(event);
       });
-      function displayError(event) {
-        changeLoadingStatePrices(false);
-        let displayError = document.getElementById('card-element-errors');
-        if (event.error) {
-          displayError.textContent = event.error.message;
-        } else {
-          displayError.textContent = '';
-        }
+      
+    function displayError(event) {
+      //changeLoadingStatePrices(false);
+      let displayError = document.getElementById('card-element-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
       }
+    }
 
     var form = document.getElementById('subscription-form');
 
@@ -251,8 +253,31 @@ input {
                 showCardError(error);
               })
          );
+      }
 
-  }
-</script>
+    function create_user(){
+        $.ajax({
+            url: "<?php echo base_url('register/register_user'); ?>",
+            type: "POST",
+            data: { 
+                "username": '<?php echo $user->username;?>', 
+                "email": '<?php echo $user->email;?>', 
+                "password" : '<?php echo $user->password;?>', 
+                "membership": '<?php echo $membership->id;?>',
+              //  "orderId": data.orderID, 
+              //  "billingToken": data.billingToken, 
+               // "subscriptionId": data.subscriptionID, 
+               // "facilitatorAccessToken": data.facilitatorAccessToken, 
+            } ,
+            success: function (response) {
+    			console.log(response);
+               // You will get response from your PHP page (what you echo or print)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+               console.log(textStatus, errorThrown);
+            }    
+        });
+      }
+  </script>
 </body>
 </html>
