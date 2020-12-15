@@ -41,7 +41,7 @@ class Stripe extends CI_Controller {
             'customer' => $customer->id,
             'items' => [
             [
-                'price' => 'price_1HueKxAsgKxZZ0EMup4VtTg0',
+                'price' =>  $requestBody->priceId,
             ],
             ],
             'expand' => ['latest_invoice.payment_intent'],
